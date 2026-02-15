@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title> 윤드민턴 3.1절 여복 모임🔥</title>
+  <title>윤드민턴 3.1절 여복 모임🔥</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --bg: #0a0e14;
@@ -25,11 +27,12 @@
       background: linear-gradient(135deg, #0f172a 0%, var(--bg) 100%);
       color: var(--text);
       min-height: 100vh;
-      padding: 24px 16px;
+      padding: 24px 16px 40px;
       line-height: 1.5;
     }
     .wrap { max-width: 1100px; margin: 0 auto; }
     header { text-align: center; margin-bottom: 32px; }
+
     .hero {
       position: relative;
       height: 240px;
@@ -61,11 +64,13 @@
       text-shadow: 0 3px 12px rgba(0,0,0,0.7);
     }
     .hero .sub {
-      font-size: 17px;
+      font-size: 16px;
       color: #e2e8f0;
       opacity: 0.95;
       font-weight: 500;
+      line-height: 1.45;
     }
+
     .grid { display: grid; gap: 24px; }
     @media (min-width: 960px) { .grid { grid-template-columns: 420px 1fr; } }
 
@@ -182,32 +187,30 @@
     .hint { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
     .meta-row { display:flex; justify-content:center; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom: 32px; }
 
-    /* --- CTA (하단 홍보 문구) --- */
-    .cta-card{
-      margin-top: 24px;
+    /* --- Footer CTA --- */
+    footer.footer-cta {
+      max-width: 1100px;
+      margin: 22px auto 0;
+      padding: 18px 16px;
       text-align: center;
-      padding: 22px 20px;
-    }
-    .cta-title{
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
-    }
-    .cta-sub{
       color: var(--muted);
+      border-top: 1px solid rgba(148,163,184,0.18);
+    }
+    .footer-cta .line1 {
+      font-weight: 900;
+      color: #e2e8f0;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+    .footer-cta .line2 {
       font-size: 14px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
-    .cta-actions{
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .cta-link{
+    .footer-cta a {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
       padding: 10px 14px;
       border-radius: 999px;
@@ -218,11 +221,10 @@
       background: rgba(225,29,72,0.12);
       color: #fecdd3;
     }
-    .cta-link:hover{
+    .footer-cta a:hover {
       transform: translateY(-1px);
       box-shadow: 0 10px 24px rgba(225,29,72,0.18);
     }
-
   </style>
 </head>
 
@@ -233,8 +235,10 @@
         <img src="https://thumbs.dreamstime.com/b/empty-badminton-court-spotlight-lit-modern-sports-arena-glows-under-bright-spotlights-indoor-ready-match-408686914.jpg" alt="배드민턴 코트" />
         <div class="hero-overlay">
           <h1>윤드민턴 3.1절 여복 벙🔥</h1>
-          <div class=>광주 에이트민턴 12~15시 
-          <br>(급수 나이제한 XX)</div>
+          <div class="sub">
+            광주 에이트민턴 12~15시<br>
+            (급수/나이 제한 없음)
+          </div>
         </div>
       </div>
 
@@ -288,6 +292,7 @@
           ※ 신청 후 입금이 확인되면 ‘대기’에서 ‘참가’로 변경됩니다.<br>
           우리은행 1002-154-683994 / 참가비 15,000원
         </div>
+
         <div class="toast" id="toast"></div>
       </section>
 
@@ -318,15 +323,6 @@
         </div>
 
         <table>
-
-        <div class="promo-text">
-          번개 모임, 아직도 일일이 DM 보내세요?<br>
-          이제는 페이지 하나로 간편하게 관리하세요.<br>
-          문의 👉 @yoondminton
-        </div>
-        
-        </section>
-
           <thead>
             <tr>
               <th style="width:120px;">상태</th>
@@ -342,10 +338,16 @@
     </div>
   </div>
 
+  <!-- ✅ Footer CTA (원하는 문구를 “푸터”로 깔끔하게) -->
+  <footer class="footer-cta">
+    <div class="line1">번개 모임, 아직도 일일이 DM 보내세요?</div>
+    <div class="line2">이제는 페이지 하나로 간편하게 관리하세요.</div>
+    <a href="https://instagram.com/yoondminton" target="_blank" rel="noopener">문의 👉 @yoondminton</a>
+  </footer>
+
   <script>
     // ── CONFIG (⚠️ 여기만 너 URL로 바꾸면 됨) ───────────────────────────
     const CONFIG = {
-      // Apps Script WebApp URL (/exec)
       API_BASE: "https://script.google.com/macros/s/AKfycbzNyaMko0FWga-dN6X-yW1-v_yPgBmDtaA1dKexEhtYqMbXpekBzXj6gU2Er2fKQml2JQ/exec",
       POLL_MS: 10_000,
     };
@@ -457,7 +459,7 @@
       if (f !== "all") items = items.filter((it) => (it.status ?? "대기").trim() === f);
 
       const t = (x) => {
-        const ms = new Date(x?.createdAt ?? "").getTime();
+        const ms = new Date(x?.timestamp ?? x?.createdAt ?? "").getTime();
         return Number.isFinite(ms) ? ms : 0;
       };
       if (sortBy === "time_desc") items.sort((a, b) => t(b) - t(a));
