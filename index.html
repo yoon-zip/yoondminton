@@ -181,6 +181,48 @@
 
     .hint { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
     .meta-row { display:flex; justify-content:center; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom: 32px; }
+
+    /* --- CTA (하단 홍보 문구) --- */
+    .cta-card{
+      margin-top: 24px;
+      text-align: center;
+      padding: 22px 20px;
+    }
+    .cta-title{
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .cta-sub{
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+    .cta-actions{
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cta-link{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      border: 1px solid rgba(225,29,72,0.45);
+      background: rgba(225,29,72,0.12);
+      color: #fecdd3;
+    }
+    .cta-link:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(225,29,72,0.18);
+    }
+
   </style>
 </head>
 
@@ -276,6 +318,15 @@
         </div>
 
         <table>
+
+        <div class="promo-text">
+          번개 모임, 아직도 일일이 DM 보내세요?<br>
+          이제는 페이지 하나로 간편하게 관리하세요.<br>
+          문의 👉 @yoondminton
+        </div>
+        
+        </section>
+
           <thead>
             <tr>
               <th style="width:120px;">상태</th>
