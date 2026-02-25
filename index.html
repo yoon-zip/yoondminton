@@ -144,7 +144,7 @@
     .pill-sync-ok  { background: rgba(34,197,94,0.15); color: #86efac; border:1px solid rgba(34,197,94,0.4); }
     .pill-sync-err { background: rgba(239,68,68,0.15); color: #fca5a5; border:1px solid rgba(239,68,68,0.4); }
 
-    table { width:100%; border-collapse: collapse; font-size:14px; margin-top: 16px; }
+    table { width:100%; border-collapse: collapse; font-size:14px; margin-top: 16px; table-layout: fixed; }
     th {
       text-align:left;
       padding: 12px 14px;
@@ -225,6 +225,44 @@
       transform: translateY(-1px);
       box-shadow: 0 10px 24px rgba(225,29,72,0.18);
     }
+
+    /* --- Mobile Card List UI --- */
+    .card-list {
+      display: none;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .person-card {
+      background: rgba(15,23,42,0.6);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .person-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .person-name {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+    }
+    .person-meta {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 700px) {
+      table { display: none; }
+      .card-list { display: flex; flex-direction: column; }
+    }
   </style>
 </head>
 
@@ -291,7 +329,8 @@
         <div class="hint">
           ※ 신청 후 입금이 확인되면 ‘대기’에서 ‘참가’로 변경됩니다.<br>
           우리은행 1002-154-683994(최윤서) <br>
-          참가비 15,000원(대관료 포함, 콕 무제한)
+          여 참가비 15,000원(대관료 포함, 콕 무제한)
+          남 참가비 10,000원(대관료, 콕 25,000원 이상 제품 3개 지참)
         </div>
 
         <div class="toast" id="toast"></div>
@@ -302,7 +341,7 @@
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
           <div>
             <div class="section-title">참가 명단</div>
-            <div id="countText" style="color:var(--muted); font-size:14px;">0명</div>
+            <div id="countText" style="color:var(--muted); font-size:14px;">참가 0명</div>
           </div>
           <div>
             <span class="pill" id="autoPill">🔄 자동 갱신: 10초</span>
@@ -310,7 +349,7 @@
         </div>
 
         <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
-          <input id="search" placeholder="이름 · 급수 검색" style="flex:1; min-width:180px;" />
+          <input id="search" placeholder="이름 · 급수 · 성별 검색" style="flex:1; min-width:180px;" />
           <select id="filterStatus">
             <option value="all" selected>전체 상태</option>
             <option value="대기">대기만</option>
@@ -323,24 +362,27 @@
           </select>
         </div>
 
+        <!-- Desktop: Table -->
         <table>
           <thead>
             <tr>
-              <th style="width:120px;">상태</th>
-              <th>이름</th>
-              <th style="width:90px;">급수</th>
-              <th style="width:90px;">성별</th>
+              <th style="width:110px;">상태</th>
+              <th style="width:40%;">이름</th>
+              <th style="width:70px;">급수</th>
+              <th style="width:60px;">성별</th>
             </tr>
           </thead>
           <tbody id="tbody">
             <tr><td colspan="4" style="text-align:center; padding:32px; color:var(--muted);">명단 불러오는 중…</td></tr>
           </tbody>
         </table>
+
+        <!-- Mobile: Card List -->
+        <div id="cardList" class="card-list"></div>
       </section>
     </div>
   </div>
 
-  <!-- ✅ Footer CTA (원하는 문구를 “푸터”로 깔끔하게) -->
   <footer class="footer-cta">
     <div class="line1">번개 모임, 일일이 안내하는대신,</div>
     <div class="line2">페이지 하나로 간편하게 관리해 보세요!</div>
@@ -348,7 +390,7 @@
   </footer>
 
   <script>
-    // ── CONFIG (⚠️ 여기만 너 URL로 바꾸면 됨) ───────────────────────────
+    // ── CONFIG ────────────────────────────────────────────────
     const CONFIG = {
       API_BASE: "https://script.google.com/macros/s/AKfycbzNyaMko0FWga-dN6X-yW1-v_yPgBmDtaA1dKexEhtYqMbXpekBzXj6gU2Er2fKQml2JQ/exec",
       POLL_MS: 10_000,
@@ -390,7 +432,7 @@
       return `<span class="status s-wait"><span class="dot"></span>대기</span>`;
     }
 
-    // ── JSONP (GitHub Pages용 핵심) ───────────────────────────
+    // ── JSONP ────────────────────────────────────────────────
     function jsonp(url) {
       return new Promise((resolve, reject) => {
         const cb = "cb_" + Math.random().toString(36).slice(2);
@@ -419,11 +461,11 @@
       });
     }
 
-    // ── API (JSONP로 list/apply) ──────────────────────────────
+    // ── API ────────────────────────────────────────────────
     async function apiGetList() {
       const url = new URL(CONFIG.API_BASE);
       url.searchParams.set("action", "list");
-      url.searchParams.set("_t", String(Date.now())); // cache bust
+      url.searchParams.set("_t", String(Date.now()));
       const data = await jsonp(url.toString());
       if (!data || !Array.isArray(data.items)) throw new Error("응답 형식 오류 (items 배열 없음)");
       return data.items;
@@ -453,7 +495,7 @@
 
       if (q) {
         items = items.filter((it) => {
-          const s = `${it.name ?? ""} ${it.level ?? ""}`.toLowerCase();
+          const s = `${it.name ?? ""} ${it.level ?? ""} ${it.gender ?? ""}`.toLowerCase();
           return s.includes(q);
         });
       }
@@ -468,15 +510,20 @@
       if (sortBy === "time_asc")  items.sort((a, b) => t(a) - t(b));
       if (sortBy === "name_asc")  items.sort((a, b) => String(a.name ?? "").localeCompare(String(b.name ?? ""), "ko"));
 
-      const 참가수 = allItems.filter((it) => (it.status ?? "대기").trim() === "참가").length;
+      // ✅ 참가 인원은 "참가" 상태만 카운트 (필터 적용된 items 기준)
+      const 참가수 = items.filter((it) => (it.status ?? "대기").trim() === "참가").length;
       $("countText").textContent = `참가 ${참가수}명`;
 
       const tbody = $("tbody");
+      const cardList = $("cardList");
+
       if (items.length === 0) {
         tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:32px; color:var(--muted);">표시할 항목이 없습니다.</td></tr>`;
+        cardList.innerHTML = ``;
         return;
       }
 
+      // Desktop table
       tbody.innerHTML = items.map((it) => `
         <tr>
           <td>${statusChip(it.status)}</td>
@@ -484,6 +531,17 @@
           <td>${escapeHtml(it.level ?? "")}</td>
           <td>${escapeHtml(it.gender ?? "")}</td>
         </tr>
+      `).join("");
+
+      // Mobile card list
+      cardList.innerHTML = items.map((it) => `
+        <div class="person-card">
+          <div class="person-top">
+            <div>${statusChip(it.status)}</div>
+            <div class="person-meta">${escapeHtml(it.level ?? "")} · ${escapeHtml(it.gender ?? "")}</div>
+          </div>
+          <div class="person-name">${escapeHtml(it.name ?? "")}</div>
+        </div>
       `).join("");
     }
 
@@ -513,6 +571,7 @@
             </td>
           </tr>
         `;
+        $("cardList").innerHTML = ``;
       }
     }
 
