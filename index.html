@@ -329,10 +329,11 @@
               <th style="width:120px;">상태</th>
               <th>이름</th>
               <th style="width:90px;">급수</th>
+              <th style="width:90px;">성별</th>
             </tr>
           </thead>
           <tbody id="tbody">
-            <tr><td colspan="3" style="text-align:center; padding:32px; color:var(--muted);">명단 불러오는 중…</td></tr>
+            <tr><td colspan="4" style="text-align:center; padding:32px; color:var(--muted);">명단 불러오는 중…</td></tr>
           </tbody>
         </table>
       </section>
@@ -471,7 +472,7 @@
 
       const tbody = $("tbody");
       if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:32px; color:var(--muted);">표시할 항목이 없습니다.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:32px; color:var(--muted);">표시할 항목이 없습니다.</td></tr>`;
         return;
       }
 
@@ -480,6 +481,7 @@
           <td>${statusChip(it.status)}</td>
           <td style="font-weight:700;">${escapeHtml(it.name ?? "")}</td>
           <td>${escapeHtml(it.level ?? "")}</td>
+          <td>${escapeHtml(it.gender ?? "")}</td>
         </tr>
       `).join("");
     }
@@ -505,7 +507,7 @@
         if (showToast) toast(e.message || "불러오기 오류", "bad");
         $("tbody").innerHTML = `
           <tr>
-            <td colspan="3" style="text-align:center; padding:32px; color:var(--muted);">
+            <td colspan="4" style="text-align:center; padding:32px; color:var(--muted);">
               불러오기 실패: ${escapeHtml(e.message || "오류")}
             </td>
           </tr>
