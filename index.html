@@ -468,7 +468,8 @@
       if (sortBy === "time_asc")  items.sort((a, b) => t(a) - t(b));
       if (sortBy === "name_asc")  items.sort((a, b) => String(a.name ?? "").localeCompare(String(b.name ?? ""), "ko"));
 
-      $("countText").textContent = `${items.length}명`;
+      const 참가수 = allItems.filter((it) => (it.status ?? "대기").trim() === "참가").length;
+      $("countText").textContent = `참가 ${참가수}명`;
 
       const tbody = $("tbody");
       if (items.length === 0) {
